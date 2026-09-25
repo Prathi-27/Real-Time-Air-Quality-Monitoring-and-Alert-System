@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Air Quality Monitor</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>Create Account</h1>
+                <p>Register to monitor air quality and track historical searches</p>
+            </div>
+
+            <!-- Dynamic Alert Container -->
+            <div id="alertBox"></div>
+
+            <form action="RegisterServlet" method="POST" id="registerForm" onsubmit="return validateForm()">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="full_name" class="form-control" placeholder="John Doe" required autocomplete="name">
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="johndoe" required autocomplete="username">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="john@example.com" required autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Minimum 6 characters" required autocomplete="new-password">
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirm_password" class="form-control" placeholder="Re-type your password" required autocomplete="new-password">
+                </div>
+
+                <button type="submit" class="btn-primary" id="registerBtn">Create Account</button>
+            </form>
+
+            <div class="auth-footer">
+                Already have an account? <a href="login.html">Sign in here</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check URL parameters for backend validation errors
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const alertBox = document.getElementById('alertBox');
+
+            if (urlParams.has('error')) {
+                const errorMsg = decodeURIComponent(urlParams.get('error'));
+                alertBox.innerHTML = '<div class="alert alert-error">' + escapeHtml(errorMsg) + '</div>';
+            }
+        });
+
+        // Client-side quick validation before submission
+        function validateForm() {
+            const pass = document.getElementById('password').value;
+            const confirmPass = document.getElementById('confirmPassword').value;
+            const alertBox = document.getElementById('alertBox');
+
+            if (pass !== confirmPass) {
+                alertBox.innerHTML = '<div class="alert alert-error">Passwords do not match. Please verify.</div>';
+                return false;
+            }
+
+            if (pass.length < 6) {
+                alertBox.innerHTML = '<div class="alert alert-error">Password must be at least 6 characters long.</div>';
+                return false;
+            }
+
+            return true;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

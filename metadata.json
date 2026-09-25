@@ -1,0 +1,6 @@
+{
+  "name": "Air Quality Monitor - Java Servlet & MySQL",
+  "description": "Full-stack Air Quality Monitoring system with Java Servlets, JDBC, MySQL authentication, OpenWeatherMap API, and search history.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

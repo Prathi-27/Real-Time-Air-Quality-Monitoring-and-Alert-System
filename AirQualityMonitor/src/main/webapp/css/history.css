@@ -1,0 +1,160 @@
+/* =========================================================
+   Air Quality Monitor - History Page Stylesheet
+   Consistent Atmosphere/Clean Sky Theme
+   ========================================================= */
+
+@import url('login.css');
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 0;
+}
+
+.history-nav {
+    background: rgba(12, 74, 110, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #ffffff;
+}
+
+.history-nav .brand-title {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #38bdf8;
+    text-decoration: none;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-badge {
+    color: #cbd5e1;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+}
+
+.user-badge strong {
+    color: #ffffff;
+}
+
+.nav-link-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.nav-link-primary {
+    background: #0284c7;
+    color: #ffffff;
+}
+.nav-link-primary:hover {
+    background: #0369a1;
+}
+
+.nav-link-danger {
+    background: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.4);
+}
+.nav-link-danger:hover {
+    background: #ef4444;
+    color: #ffffff;
+}
+
+.history-main {
+    flex: 1;
+    max-width: 1200px;
+    width: 100%;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+.history-card {
+    background: #ffffff;
+    border-radius: var(--radius-card);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    padding: 2rem;
+}
+
+.history-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.history-header h1 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.875rem;
+}
+
+.history-table th {
+    background: #f1f5f9;
+    color: #334155;
+    font-weight: 700;
+    padding: 0.9rem 1rem;
+    white-space: nowrap;
+    border-bottom: 1px solid #cbd5e1;
+}
+
+.history-table td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid #f1f5f9;
+    color: #1e293b;
+    white-space: nowrap;
+}
+
+.history-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+/* AQI Badges */
+.aqi-pill {
+    display: inline-block;
+    padding: 0.3rem 0.75rem;
+    border-radius: 9999px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: #ffffff;
+}
+.aqi-1 { background: #16a34a; }
+.aqi-2 { background: #65a30d; }
+.aqi-3 { background: #ca8a04; }
+.aqi-4 { background: #ea580c; }
+.aqi-5 { background: #dc2626; }

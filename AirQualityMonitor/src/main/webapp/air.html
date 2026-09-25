@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air Quality Monitor</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- ============================================================== -->
+    <!-- TOP NAVIGATION: User Status, History Navigation & Logout -->
+    <!-- ============================================================== -->
+    <nav class="navbar">
+        <a href="air.html" class="brand">
+            <span>🌍</span> Air Quality Monitor
+        </a>
+        <div class="nav-links">
+            <span class="nav-user" id="userGreeting">Checking session...</span>
+            <a href="history.html" class="nav-btn nav-btn-secondary">📜 Search History</a>
+            <a href="LogoutServlet" class="nav-btn nav-btn-danger">🚪 Logout</a>
+        </div>
+    </nav>
+    <!-- ============================================================== -->
+
+    <div class="main-container">
+        <!-- Search Card -->
+        <div class="card">
+            <h2 class="card-title">Check City Air Quality</h2>
+            <div class="search-bar-wrap">
+                <input type="text" id="cityInput" class="search-input" placeholder="Enter city name (e.g. London, Tokyo, Delhi, New York)" autocomplete="off">
+                <button id="searchBtn" class="search-btn" onclick="searchAirQuality()">Search</button>
+            </div>
+
+            <!-- Optional API Key customizer if user has their own OpenWeatherMap key -->
+            <div style="font-size: 0.8rem; color: #64748b; margin-top: -0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                <span>OpenWeatherMap Key:</span>
+                <input type="password" id="customApiKey" placeholder="Default demo key active" style="font-size: 0.8rem; padding: 0.2rem 0.5rem; border: 1px solid #cbd5e1; border-radius: 4px; width: 220px;">
+                <span style="font-size: 0.75rem; color: #94a3b8;">(Leave blank to use default demo key)</span>
+            </div>
+
+            <!-- Loading Message -->
+            <div id="loadingMessage" style="display: none; margin-top: 1rem;" class="alert alert-info">
+                ⏳ Fetching air quality data from OpenWeatherMap...
+            </div>
+
+            <!-- Error Handling Message -->
+            <div id="errorMessage" style="display: none; margin-top: 1rem;" class="alert alert-error"></div>
+
+            <!-- Save status indicator -->
+            <div id="saveStatus" style="display: none; margin-top: 0.75rem;"></div>
+        </div>
+
+        <!-- Result Container -->
+        <div id="resultContainer" style="display: none;">
+            <!-- AQI Banner -->
+            <div id="aqiCard" class="card aqi-hero-card">
+                <div>
+                    <h3 id="cityNameDisplay" style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem;">City</h3>
+                    <p id="coordinatesDisplay" style="font-size: 0.85rem; color: #64748b;">Lat: 0.00, Lon: 0.00</p>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.25rem;">Air Quality Index (AQI)</div>
+                    <span id="aqiBadge" class="aqi-badge">Moderate</span>
+                </div>
+            </div>
+
+            <!-- Health Alert & Recommendations -->
+            <div class="card">
+                <h3 class="card-title">⚠️ Health Advisory &amp; Recommendations</h3>
+                <div id="healthAlert" style="font-weight: 600; font-size: 1.05rem; margin-bottom: 0.5rem; color: #0f172a;"></div>
+                <p id="healthRecommendations" style="color: #475569; line-height: 1.6; font-size: 0.95rem;"></p>
+            </div>
+
+            <!-- Pollutants Grid -->
+            <div class="card">
+                <h3 class="card-title">📊 Pollutant Breakdown (Concentrations in μg/m³)</h3>
+                <div class="pollutants-grid">
+                    <div class="pollutant-card">
+                        <div class="pollutant-name">PM2.5</div>
+                        <div class="pollutant-value" id="val_pm2_5">-</div>
+                        <div class="pollutant-unit">Fine Particles</div>
+                    </div>
+                    <div class="pollutant-card">
+                        <div class="pollutant-name">PM10</div>
+                        <div class="pollutant-value" id="val_pm10">-</div>
+                        <div class="pollutant-unit">Coarse Dust</div>
+                    </div>
+                    <div class="pollutant-card">
+                        <div class="pollutant-name">NO₂</div>
+                        <div class="pollutant-value" id="val_no2">-</div>
+                        <div class="pollutant-unit">Nitrogen Dioxide</div>
+                    </div>
+                    <div class="pollutant-card">
+                        <div class="pollutant-name">SO₂</div>
+                        <div class="pollutant-value" id="val_so2">-</div>
+                        <div class="pollutant-unit">Sulphur Dioxide</div>
+                    </div>
+                    <div class="pollutant-card">
+                        <div class="pollutant-name">CO</div>
+                        <div class="pollutant-value" id="val_co">-</div>
+                        <div class="pollutant-unit">Carbon Monoxide</div>
+                    </div>
+                    <div class="pollutant-card">
+                        <div class="pollutant-name">O₃</div>
+                        <div class="pollutant-value" id="val_o3">-</div>
+                        <div class="pollutant-unit">Ozone</div>
+                    </div>
+                    <div class="pollutant-card">
+                        <div class="pollutant-name">NO</div>
+                        <div class="pollutant-value" id="val_no">-</div>
+                        <div class="pollutant-unit">Nitrogen Monoxide</div>
+                    </div>
+                    <div class="pollutant-card">
+                        <div class="pollutant-name">NH₃</div>
+                        <div class="pollutant-value" id="val_nh3">-</div>
+                        <div class="pollutant-unit">Ammonia</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application JavaScript -->
+    <script src="js/air.js"></script>
+</body>
+</html>

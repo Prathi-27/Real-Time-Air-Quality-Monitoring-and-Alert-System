@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                             http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <display-name>Air Quality Monitor</display-name>
+
+    <!-- Welcome File List -->
+    <welcome-file-list>
+        <welcome-file>login.html</welcome-file>
+        <welcome-file>air.html</welcome-file>
+    </welcome-file-list>
+
+    <!-- Session Configuration -->
+    <session-config>
+        <!-- Inactive session timeout in minutes -->
+        <session-timeout>30</session-timeout>
+        <cookie-config>
+            <http-only>true</http-only>
+            <secure>false</secure>
+        </cookie-config>
+    </session-config>
+
+    <!-- ============================================== -->
+    <!-- Authentication Filter (Protects air.html & history.html) -->
+    <!-- ============================================== -->
+    <filter>
+        <filter-name>AuthenticationFilter</filter-name>
+        <filter-class>com.airquality.servlet.AuthenticationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/air.html</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/history.html</url-pattern>
+    </filter-mapping>
+
+    <!-- ============================================== -->
+    <!-- Servlets Configuration                         -->
+    <!-- ============================================== -->
+
+    <!-- 1. Login Servlet -->
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>com.airquality.servlet.LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/LoginServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- 2. Register Servlet -->
+    <servlet>
+        <servlet-name>RegisterServlet</servlet-name>
+        <servlet-class>com.airquality.servlet.RegisterServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegisterServlet</servlet-name>
+        <url-pattern>/RegisterServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- 3. Logout Servlet -->
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>com.airquality.servlet.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/LogoutServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- 4. Save Air Quality Servlet -->
+    <servlet>
+        <servlet-name>SaveAirQualityServlet</servlet-name>
+        <servlet-class>com.airquality.servlet.SaveAirQualityServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SaveAirQualityServlet</servlet-name>
+        <url-pattern>/SaveAirQualityServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- 5. History Servlet -->
+    <servlet>
+        <servlet-name>HistoryServlet</servlet-name>
+        <servlet-class>com.airquality.servlet.HistoryServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HistoryServlet</servlet-name>
+        <url-pattern>/HistoryServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- 6. Check Session Servlet -->
+    <servlet>
+        <servlet-name>CheckSessionServlet</servlet-name>
+        <servlet-class>com.airquality.servlet.CheckSessionServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CheckSessionServlet</servlet-name>
+        <url-pattern>/CheckSessionServlet</url-pattern>
+    </servlet-mapping>
+
+</web-app>

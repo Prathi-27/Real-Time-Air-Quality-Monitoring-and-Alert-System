@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Air Quality Monitor</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>Air Quality Monitor</h1>
+                <p>Sign in to access your personal dashboard &amp; history</p>
+            </div>
+
+            <!-- Dynamic Alert Container for Feedback Messages -->
+            <div id="alertBox"></div>
+
+            <form action="LoginServlet" method="POST" id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username or Email</label>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="Enter username or email" required autocomplete="username">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+
+                <button type="submit" class="btn-primary" id="loginBtn">Sign In</button>
+            </form>
+
+            <div class="auth-footer">
+                Don't have an account? <a href="register.html">Create one here</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check URL parameters for messages (e.g., registration success, errors, or logout notification)
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const alertBox = document.getElementById('alertBox');
+
+            if (urlParams.has('registered')) {
+                alertBox.innerHTML = '<div class="alert alert-success">Registration successful! Please log in with your credentials.</div>';
+            } else if (urlParams.has('logged_out')) {
+                alertBox.innerHTML = '<div class="alert alert-info">You have been logged out securely.</div>';
+            } else if (urlParams.has('session_expired')) {
+                alertBox.innerHTML = '<div class="alert alert-error">Your session has expired. Please log in again.</div>';
+            } else if (urlParams.has('error')) {
+                const errorMsg = decodeURIComponent(urlParams.get('error'));
+                alertBox.innerHTML = '<div class="alert alert-error">' + escapeHtml(errorMsg) + '</div>';
+            }
+        });
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

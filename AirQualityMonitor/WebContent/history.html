@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search History - Air Quality Monitor</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <a href="air.html" class="brand">
+            <span>🌍</span> Air Quality Monitor
+        </a>
+        <div class="nav-links">
+            <span class="nav-user" id="userGreeting">Loading session...</span>
+            <a href="air.html" class="nav-btn nav-btn-secondary">🔍 Monitor Dashboard</a>
+            <a href="LogoutServlet" class="nav-btn nav-btn-danger">🚪 Logout</a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="card">
+            <div class="card-title">
+                <h2>Your Air Quality Search History</h2>
+                <button class="nav-btn nav-btn-secondary" onclick="loadHistory()">🔄 Refresh</button>
+            </div>
+            <p style="color: #64748b; margin-bottom: 1.25rem;">
+                Historical air quality measurements recorded from your searches.
+            </p>
+
+            <div id="statusMessage"></div>
+
+            <div class="table-responsive">
+                <table class="custom-table" id="historyTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>City</th>
+                            <th>AQI Level</th>
+                            <th>CO (μg/m³)</th>
+                            <th>NO (μg/m³)</th>
+                            <th>NO₂ (μg/m³)</th>
+                            <th>O₃ (μg/m³)</th>
+                            <th>SO₂ (μg/m³)</th>
+                            <th>PM2.5 (μg/m³)</th>
+                            <th>PM10 (μg/m³)</th>
+                            <th>NH₃ (μg/m³)</th>
+                            <th>Search Date &amp; Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody">
+                        <tr>
+                            <td colspan="12" style="text-align: center; padding: 2rem; color: #64748b;">
+                                Loading your search history...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/history.js"></script>
+</body>
+</html>

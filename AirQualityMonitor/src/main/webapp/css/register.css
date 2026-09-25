@@ -1,0 +1,15 @@
+/* =========================================================
+   Air Quality Monitor - Registration Page Stylesheet
+   ========================================================= */
+
+@import url('login.css');
+
+.register-card {
+    max-width: 500px;
+}
+
+.password-hint {
+    font-size: 0.775rem;
+    color: #64748b;
+    margin-top: 0.35rem;
+}
