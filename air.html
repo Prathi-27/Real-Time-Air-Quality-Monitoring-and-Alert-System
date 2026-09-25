@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Air Quality Monitor</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: #f8fafc;
+      color: #222;
+      min-height: 100vh;
+      padding: 30px 15px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 16px;
+      padding: 30px 40px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      color: #166534;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #555;
+      font-size: 1rem;
+    }
+
+    .location-form {
+      display: flex;
+      justify-content: center;
+      margin: 25px 0;
+      gap: 10px;
+    }
+
+    .location-input {
+      flex: 1;
+      padding: 12px 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .submit-btn {
+      padding: 12px 18px;
+      border: none;
+      background: #16a34a;
+      color: white;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background: #15803d;
+    }
+
+    .current-location {
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: 500;
+      color: #444;
+    }
+
+    .aqi-card {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .aqi-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #166534;
+    }
+
+    .aqi-status {
+      display: inline-block;
+      background: #dcfce7;
+      color: #166534;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 600;
+      margin-top: 6px;
+    }
+
+    .aqi-desc {
+      color: #555;
+      margin-top: 10px;
+    }
+
+    .pollutants {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .pollutant {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+
+    .pollutant:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .pollutant-name {
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #166534;
+    }
+
+    .pollutant-value {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #111;
+    }
+
+    .health-alert,
+    .recommendations {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 18px;
+      margin-bottom: 20px;
+    }
+
+    .alert-title,
+    .recommendations-title {
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #166534;
+      font-size: 1.1rem;
+    }
+
+    .recommendations-list {
+      list-style: disc;
+      padding-left: 20px;
+      color: #333;
+    }
+
+    .loading, .error {
+      text-align: center;
+      margin: 20px 0;
+      font-size: 1rem;
+    }
+
+    .error {
+      color: #b91c1c;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 25px;
+      font-size: 0.85rem;
+      color: #666;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1><i class="fas fa-wind"></i> Air Quality Monitor</h1>
+      <p class="subtitle">Real-time air quality monitoring with personalized health recommendations.</p>
+    </header>
+
+    <form class="location-form" id="locationForm">
+      <input type="text" class="location-input" id="locationInput" placeholder="Enter city name..." required>
+      <button type="submit" class="submit-btn">Search</button>
+    </form>
+
+    <div class="current-location" id="currentLocation">Current Location: Not set</div>
+
+    <div id="loading" class="loading" style="display: none;">
+      <i class="fas fa-spinner fa-spin"></i> Loading air quality data...
+    </div>
+
+    <div id="error" class="error" style="display: none;">
+      <i class="fas fa-exclamation-triangle"></i> Error loading data. Please try again.
+    </div>
+
+    <div id="airQualityData" style="display: none;">
+      <div class="aqi-card">
+        <div class="aqi-value" id="aqiValue">--</div>
+        <div class="aqi-status" id="aqiStatus">Loading...</div>
+        <p class="aqi-desc" id="aqiDesc">Air quality description will appear here.</p>
+      </div>
+
+      <div class="pollutants" id="pollutants"></div>
+
+      <div class="health-alert">
+        <div class="alert-title">Health Alert</div>
+        <div id="alertMessage">Loading...</div>
+      </div>
+
+      <div class="recommendations">
+        <div class="recommendations-title">Recommendations</div>
+        <ul class="recommendations-list" id="recommendationsList"></ul>
+      </div>
+    </div>
+
+    <footer>
+      <p>Live Air Quality Index (AQI) data powered by OpenWeatherMap API.</p>
+    </footer>
+  </div>
+
+  <script>
+    const API_KEY = "1815e602fa6fc9d63b934096c0959bea"; // 🔑 Replace with your OpenWeatherMap API key
+
+    class AirQualityApp {
+      constructor() {
+        this.form = document.getElementById('locationForm');
+        this.input = document.getElementById('locationInput');
+        this.loading = document.getElementById('loading');
+        this.error = document.getElementById('error');
+        this.dataDiv = document.getElementById('airQualityData');
+        this.current = document.getElementById('currentLocation');
+        this.aqiValue = document.getElementById('aqiValue');
+        this.aqiStatus = document.getElementById('aqiStatus');
+        this.aqiDesc = document.getElementById('aqiDesc');
+        this.pollutants = document.getElementById('pollutants');
+        this.alertMsg = document.getElementById('alertMessage');
+        this.recommendations = document.getElementById('recommendationsList');
+
+        this.form.addEventListener('submit', e => {
+          e.preventDefault();
+          this.fetchData();
+        });
+      }
+
+      async fetchData() {
+        const city = this.input.value.trim();
+        if (!city) return;
+
+        this.showLoading();
+        this.hideError();
+        this.hideData();
+
+        try {
+          // Step 1: Get coordinates from city name
+          const geoRes = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${API_KEY}`);
+          const geoData = await geoRes.json();
+
+          if (!geoData.length) {
+            throw new Error("City not found");
+          }
+
+          const { lat, lon, name } = geoData[0];
+
+          // Step 2: Get Air Quality Data
+          const airRes = await fetch(`https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`);
+          const airData = await airRes.json();
+
+          if (!airData || !airData.list || !airData.list.length) {
+            throw new Error("No air data found");
+          }
+
+          const data = airData.list[0];
+          this.displayData(name, data);
+        } catch (err) {
+          this.showError("Unable to fetch data. Please try another city.");
+        } finally {
+          this.hideLoading();
+        }
+      }
+
+      displayData(location, data) {
+        const aqi = data.main.aqi;
+        const pollutants = data.components;
+
+        const statusMap = {
+          1: "🤩 Good",
+          2: "🥰 Fair",
+          3: "😊 Moderate",
+          4: "😞 Poor",
+          5: "😕 Very Poor"
+        };
+
+        const alertMap = {
+          1: "Air quality is excellent. Enjoy outdoor activities.",
+          2: "Air quality is acceptable. Sensitive individuals should take minor care.",
+          3: "Air quality is moderate. Limit prolonged outdoor exertion.",
+          4: "Poor air quality. Avoid outdoor activities if possible.",
+          5: "Very poor air quality. Stay indoors and wear masks if necessary."
+        };
+
+        const recommendMap = {
+          1: ["Enjoy outdoor activities", "Keep windows open"],
+          2: ["Go for walks", "Avoid traffic-heavy areas"],
+          3: ["Use air purifier indoors", "Avoid intense outdoor work"],
+          4: ["Wear a mask outdoors", "Limit outdoor exposure"],
+          5: ["Stay indoors", "Use air purifier", "Avoid exercise outside"]
+        };
+
+        this.current.textContent = `Current Location: ${location}`;
+        this.aqiValue.textContent = aqi;
+        this.aqiStatus.textContent = statusMap[aqi];
+        this.aqiDesc.textContent = alertMap[aqi];
+
+        this.pollutants.innerHTML = "";
+        for (const [key, val] of Object.entries(pollutants)) {
+          const div = document.createElement("div");
+          div.className = "pollutant";
+          div.innerHTML = `
+            <div class="pollutant-name">${key.toUpperCase()}</div>
+            <div class="pollutant-value">${val.toFixed(2)} µg/m³</div>
+          `;
+          this.pollutants.appendChild(div);
+        }
+
+        this.alertMsg.textContent = alertMap[aqi];
+        this.recommendations.innerHTML = "";
+        recommendMap[aqi].forEach(r => {
+          const li = document.createElement("li");
+          li.textContent = r;
+          this.recommendations.appendChild(li);
+        });
+
+        this.dataDiv.style.display = "block";
+      }
+
+      showLoading() { this.loading.style.display = "block"; }
+      hideLoading() { this.loading.style.display = "none"; }
+      showError(msg) {
+        this.error.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
+        this.error.style.display = "block";
+      }
+      hideError() { this.error.style.display = "none"; }
+      hideData() { this.dataDiv.style.display = "none"; }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => new AirQualityApp());
+  </script>
+</body>
+</html>
+
+<!-- start air.html -->
